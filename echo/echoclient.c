@@ -38,7 +38,8 @@
 */
 
 
-
+//int argc : 함수에 입력되는 값의 개수(정수)
+//char** argv = char* argv[] : 입력된 값이 저장되는 배열의 시작 주소(문자열) 
 int main(int argc, char** argv){
 
     
@@ -84,6 +85,7 @@ int main(int argc, char** argv){
         return -2;
     }
 
+
     /* connect the socket with server*/
 
     for( p = listp; p; p = p->ai_next){
@@ -94,11 +96,13 @@ int main(int argc, char** argv){
 
         //여기서부터는 연결이 성공, connect한다. 
         if((connect(clientfd, p->ai_addr, p->ai_addrlen) != -1)){
+            printf("success connection\n");
             break; // 성공하면 break!
         }
         
         if((close(clientfd))<0){
             //실패했다면 어디서 실패했는지 적어주고 try anohter한다.
+            printf("connection failed\n");
             fprintf(stderr, "open_clientfd: close failed: %s\n", strerror(errno));
             return -1;
         }
@@ -135,6 +139,7 @@ int main(int argc, char** argv){
     }
 
     Close(clientfd);
+    printf("disconnected\n");
     exit(0);
 
 }
