@@ -55,7 +55,6 @@ void doit(int fd){
   Rio_readlineb(&rio, buf, MAXLINE); //(fd에서 읽어와 buf에 싣는다)
   printf("Request headers:\n"); 
   printf("%s", buf); //buf에 출력
-  //Fputs(buf, stdout);
   
   sscanf(buf, "%s %s %s", method, uri, version); //Read formatted input from S.
   //포맷 스트링(%s)에 맞게 데이터를 읽어서 인수에 저장
@@ -84,7 +83,7 @@ void doit(int fd){
   }
 
   
-                                    // error src: (!)
+
   if(is_static){ /* Serve static content */
     if (! (S_ISREG(sbuf.st_mode)) || !(S_IRUSR & sbuf.st_mode)){
       clienterror(fd, filename, "403", "Forbidden", 
@@ -93,12 +92,10 @@ void doit(int fd){
     }
 
     serve_static(fd, filename, sbuf.st_size);
-    //return;
   }
 
   else{/* Serve dynamic content */
-
-      if( !(S_ISREG(sbuf.st_mode)) || !(S_IXUSR & sbuf.st_mode)){
+      if( !(S_ISREG(sbuf.st_mode)) || (S_IXUSR & sbuf.st_mode)){
         clienterror(fd, filename, "403", "Forbidden", 
                     "Tiny couldn't run the CGI program");
         return;
@@ -106,11 +103,8 @@ void doit(int fd){
 
       serve_dynamic(fd, filename, cgiargs);
 
-      //return;
-  }
 
-  //Close(fd);
-  return;
+  }
 }
 
 /* --------------------------------------------------
@@ -153,9 +147,8 @@ void read_requesthdrs(rio_t *rp) {
     char buf[MAXLINE];
     Rio_readlineb(rp, buf, MAXLINE);
     while(strcmp(buf, "\r\n")) { //다르면 while 안으로 들어옴
-        //printf("1: %s", buf);
         Rio_readlineb(rp, buf, MAXLINE);
-        //printf("2: %s", buf);
+        printf("%s", buf);
     }
     return;
 }

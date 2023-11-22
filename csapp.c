@@ -960,7 +960,6 @@ int open_clientfd(char *hostname, char *port) {
         fprintf(stderr, "getaddrinfo failed (%s:%s): %s\n", hostname, port, gai_strerror(rc));
         return -2;
     }
-  
     /* Walk the list for one that we can successfully connect to */
     for (p = listp; p; p = p->ai_next) {
         /* Create a socket descriptor */
@@ -978,10 +977,14 @@ int open_clientfd(char *hostname, char *port) {
 
     /* Clean up */
     freeaddrinfo(listp);
+    printf("%p", p);
     if (!p) /* All connects failed */
-        return -1;
+        {
+            printf("4? 이게 보이면 안 돼!\n");
+            return -1;}
     else    /* The last connect succeeded */
-        return clientfd;
+        {printf("5!\n");
+            return clientfd;}
 }
 /* $end open_clientfd */
 

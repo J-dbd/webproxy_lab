@@ -170,4 +170,4 @@ as a Web client.
 
 
 ### more challenger
-1. Http 1.0 -> Http 1.1 (in code)
+1. Http 1.0 -> Http 1.1 (in code) [link](https://stackoverflow.com/questions/246859/http-1-0-vs-1-1)
